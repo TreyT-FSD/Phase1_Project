@@ -1,4 +1,4 @@
-package locked.me.prototype;
+package lockedme.prototype;
 
 public class GitTest {
 
