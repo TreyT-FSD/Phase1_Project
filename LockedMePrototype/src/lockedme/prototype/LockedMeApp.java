@@ -6,15 +6,14 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.omg.CORBA.Environment;
+
 /**
  * This class contains the core functionality of the LockedMe Application Prototype
  * @author Trey_Turley
  *
  */
 public class LockedMeApp {
-	
-	//private FileSystem currentWorkingDirectory;	
-	//private Path lockedMePath;
 	
 	private String lockedMeDirectoryName = "LockedMeDirectory";
 	private File lockedMeDirectory;
@@ -26,6 +25,16 @@ public class LockedMeApp {
 		} catch (SecurityException e) {
 			System.err.println("Failed to create the directory. Program exiting...");
 		}
+	}
+	
+	/**
+	 * Print a welcome message to the user with some basic information
+	 */
+	public void printWelcomeMessage() {
+		System.out.println("LockedMe Prototype");
+		System.out.println("Developer: Trey Turley");
+		System.out.println();
+		System.out.println();
 	}
 	
 	/**
