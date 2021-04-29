@@ -15,9 +15,10 @@ public class LockedMeProgramLoop {
 		LockedMeApp lockedMe = new LockedMeApp();
 		
 		//initial output to user
-		System.out.println("LockedMe Prototype");	
-		System.out.println();
-		System.out.println();
+		lockedMe.printWelcomeMessage();
+		
+		//TODO: cleanup unused code
+		//TODO: review functional requirements and manually test
 		
 		try {
 			//start program loop
