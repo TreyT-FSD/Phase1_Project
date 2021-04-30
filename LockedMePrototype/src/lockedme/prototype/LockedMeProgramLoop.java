@@ -10,7 +10,6 @@ public class LockedMeProgramLoop {
 		BufferedReader userInputReader = null;
 		userInputReader = new BufferedReader(new InputStreamReader(System.in));
 		int selectedAction = 0;
-		String userInput="";
 		
 		LockedMeApp lockedMe = new LockedMeApp();
 		
@@ -19,13 +18,14 @@ public class LockedMeProgramLoop {
 		
 		//TODO: cleanup unused code
 		//TODO: review functional requirements and manually test
+
 		
 		try {
 			//start program loop
 			while(running) {
 				
 				//display the available actions to the user
-				lockedMe.printMainOptions();
+				lockedMe.printHomeMenu();
 			
 				//get the user input
 				try {
@@ -49,71 +49,11 @@ public class LockedMeProgramLoop {
 					break;
 					
 				case 2:
-					//2) Search for a file
-					System.out.println("Enter a filename to search for or \"return\" to go back to the main menu.");
-					
-					
-					userInput = userInputReader.readLine();
-					if(lockedMe.isValidINput(userInput)) {
-						//String userFileName = userInputReader.readLine();
-						if(lockedMe.searchFile(userInput)) {
-							System.out.println("The file exists in the LockedMe directory.");
-						}
-						else {
-							System.out.println("The file does not exist in the LockedMe directory");
-						}
-					} 
-					else {
-						System.out.println("Returning to main menu.");
-						
-					}
-					
-					System.out.println();
-					System.out.println();
-					
-					userInput="";
+					//2) move to the file menu
+					lockedMe.LockedMeFileMenu(userInputReader);
 					break;
 					
 				case 3:
-					//3) Add file
-					System.out.println("Enter a name for the new file or \"return\" to go back to the main menu.");
-					
-					userInput = userInputReader.readLine();
-					
-					//String userFileName = userInputReader.readLine();
-					if(lockedMe.addFile(userInput)) {
-						System.out.println("The file was added to the LockedMe directory.");
-					}
-					else {
-						System.out.println("The file was not added the LockedMe directory.");
-					}
-					
-					System.out.println();
-					System.out.println();
-					
-					userInput="";
-					break;
-					
-				case 4:
-					//4) Delete files
-					System.out.println("Enter the name of the file to be deleted or \"return\" to go back to the main menu.");
-					
-					userInput = userInputReader.readLine();
-					
-					if(lockedMe.deleteFile(userInput)) {
-						System.out.println("The file was deleted from the LockedMe directory.");
-					}
-					else {
-						System.out.println("The file was not deleted from the LockedMe directory");
-					}
-					
-					System.out.println();
-					System.out.println();
-					
-					userInput="";
-					break;
-					
-				case 5:
 					//5) Exit			
 					System.out.println("Exiting...");
 					running=false;
@@ -127,7 +67,6 @@ public class LockedMeProgramLoop {
 					System.out.println();
 					System.out.println();
 					
-					userInput="";
 					break;
 				}
 			}

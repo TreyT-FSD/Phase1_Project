@@ -1,12 +1,11 @@
 package lockedme.prototype;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.omg.CORBA.Environment;
 
 /**
  * This class contains the core functionality of the LockedMe Application Prototype
@@ -18,6 +17,9 @@ public class LockedMeApp {
 	private String lockedMeDirectoryName = "LockedMeDirectory";
 	private File lockedMeDirectory;
 	
+	/**
+	 * Default constructor for LockedMe
+	 */
 	public LockedMeApp() {
 		lockedMeDirectory = new File(lockedMeDirectoryName);
 		try{
@@ -38,17 +40,28 @@ public class LockedMeApp {
 	}
 	
 	/**
-	 * Print out the main menu options.
+	 * Print out the home menu options.
 	 */
-	public void printMainOptions() {
+	public void printHomeMenu() {
 		System.out.println("Please select one of the available actions:");
 		System.out.println();
-		
 		System.out.println("1) View files");
-		System.out.println("2) Search for a file");
-		System.out.println("3) Add a file");
-		System.out.println("4) Delete a file");
-		System.out.println("5) Exit the application");
+		System.out.println("2) File interaction (Search/Add/Delete)");
+		System.out.println("3) Close the application");
+		System.out.println();
+		System.out.print("Selection: ");
+	}
+	
+	/**
+	 * Print out the file menu.
+	 */
+	public void printFileMenu() {
+		System.out.println("Please select one of the available file actions:");
+		System.out.println();
+		System.out.println("1) Search for a file");
+		System.out.println("2) Add a file");
+		System.out.println("3) Delete a file");
+		System.out.println("4) Return to the Home menu");
 		
 		System.out.println();
 		System.out.print("Selection: ");
@@ -76,6 +89,7 @@ public class LockedMeApp {
 	 * @param fileName the name of the new file
 	 */
 	public boolean addFile(String fileName) {
+		//TODO: validate we are giving the correct messages to the user during add file
 		if(!fileName.isEmpty()) {
 			//new file name + path
 			String newFilePath = lockedMeDirectory.getPath() + "\\" + fileName;
@@ -99,6 +113,7 @@ public class LockedMeApp {
 	 * @return True if the file was found and deleted. False for all other cases.
 	 */
 	public boolean deleteFile(String fileName) {
+		//TODO: validate we are giving the correct messages to the user during delete file
 		if(!fileName.isEmpty()) {
 			File file = new File(lockedMeDirectory.getPath() + "\\" + fileName);
 			
@@ -115,7 +130,7 @@ public class LockedMeApp {
 	
 	/**
 	 * Checks to see if the specified file exists.
-	 * @param fileName The name of the file to look for
+	 * @param fileName The name of the file to look for.
 	 * @return True is the file is found. False for all other cases.
 	 */
 	public boolean searchFile(String fileName) {
@@ -132,10 +147,10 @@ public class LockedMeApp {
 	
 	/**
 	 * Validates the input string to see if it is valid input for one of the three options that requires user input for file name. 
-	 * @param input the string to validate
+	 * @param input the string to validate.
 	 * @return True if it's valid input and false for all other cases.
 	 */
-	public boolean isValidINput(String input) {
+	public boolean isValidInput(String input) {
 		
 		if(input == null || input.isEmpty()) {
 			System.out.println("Invalid User Input.");
@@ -147,5 +162,126 @@ public class LockedMeApp {
 		
 		//for all other cases return true
 		return true;
+	}
+	
+	public void lockedMeHomeMenu() {		
+		
+	}
+	
+	/**
+	 * This is the file menu which presents options to the user for searching, adding, and deleting files from LockedMe.
+	 * @param userInputReader a BufferedReader that can be used to get user input.
+	 * @throws IOException if there is a problem trying to read the user input from userInputReader.
+	 */
+	public void LockedMeFileMenu(BufferedReader userInputReader) throws IOException {
+		String userInput="";
+		int selectedAction;
+		boolean returnToHomeMenu = false;
+		
+		while(!returnToHomeMenu) {
+			
+			//present the file menu options to the user
+			printFileMenu();			
+		
+			//get the user input
+			try {
+				selectedAction = Integer.parseInt(userInputReader.readLine());
+			} catch (NumberFormatException e) {
+				//the user entered an invalid input
+				selectedAction = 0;
+			}
+			
+			switch (selectedAction) {
+					
+			case 1:
+				//1) Search for a file
+				System.out.println("Enter a filename to search for or \"return\" to go back to the file menu.");
+				
+				userInput = userInputReader.readLine();
+				if(this.isValidInput(userInput)) {
+					if(searchFile(userInput)) {
+						System.out.println("The file exists in the LockedMe directory.");
+					}
+					else {
+						System.out.println("The file does not exist in the LockedMe directory");
+					}
+				} 
+				else {
+					System.out.println("Returning to the file menu.");
+					
+				}
+				
+				System.out.println();
+				System.out.println();
+				
+				userInput="";
+				break;
+				
+			case 2:
+				//2) Add file
+				System.out.println("Enter a name for the new file or \"return\" to go back to the file menu.");
+				
+				userInput = userInputReader.readLine();
+				if(this.isValidInput(userInput)) {
+					if(this.addFile(userInput)) {
+						System.out.println("The file was added to the LockedMe directory.");
+					}
+					else {
+						System.out.println("The file was not added the LockedMe directory.");
+					}
+				}
+				else {
+					System.out.println("Returning to the file menu.");
+				}
+				
+				System.out.println();
+				System.out.println();
+				
+				userInput="";
+				break;
+				
+			case 3:
+				//3) Delete file
+				System.out.println("Enter the name of the file to be deleted or \"return\" to go back to the file menu.");
+				
+				userInput = userInputReader.readLine();
+					if(this.isValidInput(userInput)) {
+						if(deleteFile(userInput)) {
+							System.out.println("The file was deleted from the LockedMe directory.");
+						}
+						else {
+							System.out.println("The file was not deleted from the LockedMe directory");
+						}
+					}
+					else {
+						System.out.println("Returning to the file menu.");
+					}
+					
+				
+				System.out.println();
+				System.out.println();
+				
+				userInput="";
+				break;
+				
+			case 4:
+				//time to go back to the home menu
+				returnToHomeMenu=true;
+				break;
+			
+			default:
+				//if we made it to the default cause, the user did not enter a valid option
+				System.out.println();
+				System.out.println("Please select an action from the list by entering a single digit number.");
+				System.out.println("Example: enter \"1\" to search for a file or \"4\" to exit.");
+				System.out.println();
+				System.out.println();
+				
+				userInput="";
+				break;
+			}
+			
+		}
+		 
 	}
 }
