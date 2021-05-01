@@ -34,4 +34,4 @@ Sprint 2:
 	 
 	Story 3 :
 	As an user, I want to be able to close the application gracefully so that I have a good experience.
-		Task 3: Ensure application closes gracefully.
+		Task 3: Ensure application closes gracefully and handles any exceptions.
