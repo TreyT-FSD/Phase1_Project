@@ -114,7 +114,6 @@ public class LockedMeApp {
 	 * @return True if the file was found and deleted. False for all other cases.
 	 */
 	public boolean deleteFile(String fileName) {
-		//TODO: validate we are giving the correct messages to the user during delete file
 		if(!fileName.isEmpty()) {
 			File file = new File(lockedMeDirectory.getPath() + "\\" + fileName);
 			
@@ -122,7 +121,19 @@ public class LockedMeApp {
 			Set<File> fileSet = new TreeSet<>(Arrays.asList(files));
 			
 			if(fileSet.contains(file)) {
-				return file.delete();
+				try {
+					if(file.delete()) {
+						System.out.println("The file was deleted from the LockedMe directory.");
+					}
+					else {
+						System.out.println("The file was not deleted from the LockedMe directory.");
+					}
+				} catch(SecurityException e) {
+					System.out.println("Access to file denied.");
+				}
+			}
+			else {
+				System.out.println("The file " + fileName + " was not found in the LockedMe directory.");
 			}
 		
 		}
@@ -338,17 +349,11 @@ public class LockedMeApp {
 				
 				userInput = userInputReader.readLine();
 					if(this.isValidInput(userInput)) {
-						if(deleteFile(userInput)) {
-							System.out.println("The file was deleted from the LockedMe directory.");
-						}
-						else {
-							System.out.println("The file was not deleted from the LockedMe directory");
-						}
+						deleteFile(userInput);
 					}
 					else {
 						System.out.println("Returning to the file menu.");
-					}
-					
+					}					
 				
 				System.out.println();
 				System.out.println();
