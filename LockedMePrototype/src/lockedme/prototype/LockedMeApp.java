@@ -10,7 +10,7 @@ import java.util.TreeSet;
 
 /**
  * This class contains the core functionality of the LockedMe Application Prototype
- * @author Trey_Turley
+ * @author Trey Turley
  *
  */
 public class LockedMeApp {
