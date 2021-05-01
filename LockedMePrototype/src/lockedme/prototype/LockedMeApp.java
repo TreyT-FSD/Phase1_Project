@@ -3,6 +3,7 @@ package lockedme.prototype;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
@@ -164,7 +165,98 @@ public class LockedMeApp {
 		return true;
 	}
 	
-	public void lockedMeHomeMenu() {		
+	/**
+	 * Kicks off the home menu which has the main loop for accepting user input.
+	 */
+	public void run() {
+		//initial output to user
+		printWelcomeMessage();
+		
+		//launch the Home menu
+		lockedMeHomeMenu();
+	}
+	
+	/**
+	 * This is the Home menu which provides several options for user interaction. It is the main user input loop. 
+	 * From here the user can  select options to View the files in LockedMe, move to the file menu, or exit the application.
+	 */
+	public void lockedMeHomeMenu() {
+		
+		boolean running = true;
+		BufferedReader userInputReader = null;
+		userInputReader = new BufferedReader(new InputStreamReader(System.in));
+		int selectedAction = 0;
+		
+		try {
+			//start program loop
+			while(running) {
+				
+				//display the available actions to the user
+				printHomeMenu();
+			
+				//get the user input
+				try {
+					selectedAction = Integer.parseInt(userInputReader.readLine());
+				} catch (NumberFormatException e) {
+					//the user entered an invalid input
+					selectedAction = 0;
+				}
+				
+				//switch statement to handle the action				
+				switch (selectedAction) {
+				case 1:
+					//1) View files
+					System.out.println("View files was selected. Current Files:");
+					
+					viewFiles();					
+					
+					System.out.println();
+					System.out.println();
+					break;
+					
+				case 2:
+					//2) move to the file menu
+					LockedMeFileMenu(userInputReader);
+					break;
+					
+				case 3:
+					//5) Exit			
+					System.out.println("Exiting...");
+					running=false;
+					break;
+	
+				default:
+					//if we made it to the default cause, the user did not enter a valid option
+					System.out.println();
+					System.out.println("Please select an action from the list by entering a single digit number.");
+					System.out.println("Example: enter \"1\" to view files or \"5\" to exit.");
+					System.out.println();
+					System.out.println();
+					
+					break;
+				}
+			}
+			
+			
+		} catch (IOException e) {
+			//some error occurred while trying to read the user input
+			System.err.println("Error: Failed to read in the user input");
+			
+		}  catch (Exception e) {
+			//catch-all for exceptions
+			System.err.println("a general error occured");
+			//e.printStackTrace();
+		}
+		finally {
+			if (userInputReader != null) {
+				try {
+					userInputReader.close();
+				} catch (IOException e) {
+					System.err.println("Error: Failed to close the userInput stream");
+					e.printStackTrace();
+				}
+			}
+		}
 		
 	}
 	
