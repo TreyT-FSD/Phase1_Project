@@ -99,9 +99,20 @@ public class LockedMeApp {
 			File newFile = new File(newFilePath);
 			
 			try {
-				return newFile.createNewFile();			
+				if(newFile.createNewFile()) {
+					//it was created
+					System.out.println("The file was added to the LockedMe directory.");
+					return true;
+				}
+				else {
+					//the file already exists
+					System.out.println("The file was not added the LockedMe directory as it already exists.");
+					return false;
+				}
 			} catch (IOException e) {
 				System.out.println("There was an error while trying to create the file. Please try again.");
+			} catch (SecurityException e) {
+				System.out.println("Write access is denied. File was not created.");
 			}
 		}
 		return false;
@@ -301,6 +312,7 @@ public class LockedMeApp {
 				System.out.println("Enter a filename to search for or \"return\" to go back to the file menu.");
 				
 				userInput = userInputReader.readLine();
+				
 				if(this.isValidInput(userInput)) {
 					if(searchFile(userInput)) {
 						System.out.println("The file exists in the LockedMe directory.");
@@ -326,12 +338,7 @@ public class LockedMeApp {
 				
 				userInput = userInputReader.readLine();
 				if(this.isValidInput(userInput)) {
-					if(this.addFile(userInput)) {
-						System.out.println("The file was added to the LockedMe directory.");
-					}
-					else {
-						System.out.println("The file was not added the LockedMe directory.");
-					}
+					addFile(userInput);
 				}
 				else {
 					System.out.println("Returning to the file menu.");
@@ -348,12 +355,13 @@ public class LockedMeApp {
 				System.out.println("Enter the name of the file to be deleted or \"return\" to go back to the file menu.");
 				
 				userInput = userInputReader.readLine();
-					if(this.isValidInput(userInput)) {
-						deleteFile(userInput);
-					}
-					else {
-						System.out.println("Returning to the file menu.");
-					}					
+				
+				if(this.isValidInput(userInput)) {
+					deleteFile(userInput);
+				}
+				else {
+					System.out.println("Returning to the file menu.");
+				}					
 				
 				System.out.println();
 				System.out.println();
